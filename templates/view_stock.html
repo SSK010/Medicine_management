@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}View Medicine Stock{% endblock %}
+
+{% block content %}
+    <div class="section">
+        <h2>Medicine Stock</h2>
+        <table>
+            <tr>
+                <th>Brand</th>
+                <th>Dose</th>
+                <th>Quantity</th>
+            </tr>
+            {% for medicine in medicines %}
+            <tr>
+                <td>{{ medicine.brand }}</td>
+                <td>{{ medicine.dose }}</td>
+                <td>{{ medicine.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <a href="{{ url_for('routes.update_stock') }}" class="btn-nav">Update Stock</a>
+    <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+    <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+    <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+{% endblock %}
+
+           

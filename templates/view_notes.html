@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Patient Notes</title>
+</head>
+<body>
+    <h1>Patient Notes & Updates</h1>
+
+    <table border="1">
+        <tr>
+            <th>Author</th>
+            <th>Patient Name</th>
+            <th>Note</th>
+            <th>Date</th>
+        </tr>
+        {% for note in notes_data %}
+        <tr>
+            <td>{{ note[1] }}</td>
+            <td>{{ note[2] }}</td>
+            <td>{{ note[3] }}</td>
+            <td>{{ note[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{{ url_for('routes.add_note') }}">Add New Note</a></p>
+</body>
+</html>

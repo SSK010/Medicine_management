@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medicine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Medicine to Stock</h1>
+        
+        <form method="POST">
+            <label for="brand">Brand Name:</label>
+            <input type="text" id="brand" name="brand" required>
+
+            <label for="dose">Dose (e.g., 500mg, 1g):</label>
+            <input type="text" id="dose" name="dose" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
+
+            <input type="submit" value="Add Medicine">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('view_stock') }}" class="btn-nav">View Stock</a>
+            <a href="{{ url_for('dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

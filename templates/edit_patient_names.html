@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Patient Names</title>
+</head>
+<body>
+    <h1>Edit Patient Names</h1>
+
+    <form method="POST">
+        <label for="new_patient_name">Add New Patient Name:</label><br>
+        <input type="text" id="new_patient_name" name="new_patient_name" required><br><br>
+        <input type="submit" value="Add Patient Name">
+    </form>
+
+    <h2>Existing Patient Names:</h2>
+    <ul>
+        {% for name in patient_names %}
+            <li>{{ name[1] }}</li> <!-- Display existing patient names -->
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ url_for('routes.dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

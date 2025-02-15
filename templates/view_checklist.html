@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Checklist</title>
+</head>
+<body>
+    <h1>Daily Patient Checklist</h1>
+
+    <table border="1">
+        <tr>
+            <th>Patient Name</th>
+            <th>Date</th>
+            <th>Bathing</th>
+            <th>Changing Position</th>
+            <th>Feeding</th>
+            <th>Medication Given</th>
+            <th>Dressing Change</th>
+            <th>Restrainer Tied</th>
+            <th>Restrainer Removed</th>
+        </tr>
+        {% for record in checklist_data %}
+        <tr>
+            <td>{{ record[1] }}</td>
+            <td>{{ record[2] }}</td>
+            <td>{{ record[3] }}</td>
+            <td>{{ record[4] }}</td>
+            <td>{{ record[5] }}</td>
+            <td>{{ record[6] }}</td>
+            <td>{{ record[7] }}</td>
+            <td>{{ record[8] }}</td>
+            <td>{{ record[9] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{{ url_for('routes.add_checklist') }}">Add New Entry</a></p>
+</body>
+</html>

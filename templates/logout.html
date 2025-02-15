@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+    <div class="auth-container logout-container">
+        <h2>You have been logged out! 🚪</h2>
+        <p>Click below to login again.</p>
+        <a href="{{ url_for('login') }}">
+            <button style="padding: 12px; font-size: 18px; background: #6A0572; color: white; border: none; border-radius: 10px; cursor: pointer;">
+                🔑 Login Again
+            </button>
+        </a>
+    </div>
+{% endblock %}

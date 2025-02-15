@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Patient Checklist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Daily Checklist</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <select id="patient_name" name="patient_name" required>
+                {% for name in patient_names %}
+                    <option value="{{ name}}">{{ name}}</option>
+                {% endfor %}
+            </select>
+
+            <label><input type="checkbox" name="bathing"> Bathing</label>
+            <label><input type="checkbox" name="position_change"> Changing Position</label>
+            <label><input type="checkbox" name="feeding"> Feeding</label>
+            <label><input type="checkbox" name="medication_given"> Medication Given</label>
+            <label><input type="checkbox" name="dressing_change"> Dressing Change</label>
+            <label><input type="checkbox" name="restrainer_tied"> Restrainer Tied</label>
+            <label><input type="checkbox" name="restrainer_removed"> Restrainer Removed</label>
+
+            <input type="submit" value="Save Checklist">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('routes.view_checklist') }}" class="btn-nav">View Checklist Records</a>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

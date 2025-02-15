@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient Note</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Patient Note</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <select id="patient_name" name="patient_name" required>
+                {% for name in patient_names %}
+                    <option value="{{ name[1] }}">{{ name[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="note">Note:</label>
+            <textarea id="note" name="note" rows="4" required></textarea>
+
+            <input type="submit" value="Save Note">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('routes.view_notes') }}" class="btn-nav">View All Notes</a>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

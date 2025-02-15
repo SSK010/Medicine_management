@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vitals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🩺 Add Patient Vitals</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" id="patient_name" name="patient_name" placeholder="Start typing to search..." required autocomplete="off">
+            <button type="button" id="add_patient_btn" style="display: none;">Add Patient</button>
+
+            <label for="bp_systolic">BP (Systolic):</label>
+            <input type="number" id="bp_systolic" name="bp_systolic" placeholder="Enter Systolic BP" required>
+
+            <label for="bp_diastolic">BP (Diastolic):</label>
+            <input type="number" id="bp_diastolic" name="bp_diastolic" placeholder="Enter Diastolic BP" required>
+
+            <label for="pulse">Pulse:</label>
+            <input type="number" id="pulse" name="pulse" placeholder="Enter Pulse" required>
+
+            <label for="spo2">SpO₂:</label>
+            <input type="number" id="spo2" name="spo2" placeholder="Enter SpO₂" required>
+
+            <label for="temp">Temperature (°F):</label>
+            <input type="number" id="temp" name="temp" placeholder="Enter Temperature" step="0.1">
+
+            <label for="smbg">SMBG (mg/dL):</label>
+            <input type="number" id="smbg" name="smbg" placeholder="Enter SMBG" step="0.1">
+
+            <input type="submit" value="Save Vitals">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('routes.view_vitals') }}" class="btn-nav">View Vitals</a>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

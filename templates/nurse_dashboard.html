@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Nurse Dashboard</title>
+</head>
+<body>
+    <h1>Nurse Dashboard</h1>
+    <p>Welcome, {{ current_user.username }} (Nurse)</p>
+    <h3>Daily Intake & Output</h3>
+    <p>Water Intake (ml): {{ water_total }}</p>
+    <p>Urine Output (ml): {{ urine_total }}</p>
+    <!-- Add Nurse features here -->
+    <p><a href="{{ url_for('routes.view_vitals') }}">View Patient Vitals</a></p>
+    <p><a href="{{ url_for('routes.view_stock') }}">View Medicine Stock</a></p>
+    <p><a href="{{ url_for('routes.administer_medicine') }}">Administer Medicine</a></p>
+    <p><a href="{{ url_for('routes.add_intake_output') }}">Record Intake & Output</a></p>
+    <p><a href="{{ url_for('routes.view_intake_output') }}">View Intake & Output Records</a></p>
+    <p><a href="{{ url_for('routes.add_checklist') }}">Record Daily Checklist</a></p>
+    <p><a href="{{ url_for('routes.view_checklist') }}">View Daily Checklist Records</a></p>
+    <p><a href="{{ url_for('routes.export_checklist_csv') }}">Export Checklist as CSV</a></p>
+    <p><a href="{{ url_for('routes.export_checklist_pdf') }}">Export Checklist as PDF</a></p>
+    <p><a href="{{ url_for('routes.add_note') }}">Add Patient Note</a></p>
+    <p><a href="{{ url_for('routes.view_notes') }}">View Notes & Updates</a></p>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Intake & Output</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Record Intake & Output</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <select id="patient_name" name="patient_name" required>
+                {% for name in patient_names %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="water_intake">Water Intake (ml):</label>
+            <input type="number" id="water_intake" name="water_intake">
+
+            <label for="urine_output">Urine Output (ml):</label>
+            <input type="number" id="urine_output" name="urine_output">
+
+            <label for="diaper_change">Diaper Change:</label>
+            <input type="checkbox" id="diaper_change" name="diaper_change">
+
+            <input type="submit" value="Save Intake & Output">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('routes.view_intake_output') }}" class="btn-nav">View All Records</a>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

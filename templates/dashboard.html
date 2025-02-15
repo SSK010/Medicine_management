@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <h2>Welcome, <strong>{{ current_user.username }}</strong>!</h2>
+        
+        <div class="dashboard-grid">
+            <a href="{{ url_for('routes.view_stock') }}" class="dashboard-card">📦 View Medicine Stock</a>
+            <a href="{{ url_for('routes.view_vitals') }}" class="dashboard-card">🩺 View Patient Vitals</a>
+            <a href="{{ url_for('routes.add_intake_output') }}" class="dashboard-card">💧 Record Intake & Output</a>
+            <a href="{{ url_for('routes.view_intake_output') }}" class="dashboard-card">📜 View Intake & Output</a>
+            <a href="{{ url_for('routes.add_checklist') }}" class="dashboard-card">📋 Record Daily Checklist</a>
+            <a href="{{ url_for('routes.view_checklist') }}" class="dashboard-card">📂 View Daily Checklist</a>
+            <a href="{{ url_for('routes.add_note') }}" class="dashboard-card">📝 Add Patient Note</a>
+            <a href="{{ url_for('routes.view_notes') }}" class="dashboard-card">📖 View Notes</a>
+            
+
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="logout-button">🚪 Logout</a>
+    </div>
+{% endblock %}

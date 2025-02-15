@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Doctor Dashboard</title>
+</head>
+<body>
+    <div class="container"></div>
+        <h1>Doctor Dashboard</h1>
+        <p>Welcome, {{ current_user.username }} (Doctor)</p>
+        <h3>Daily Intake & Output</h3>
+        <p>Water Intake (ml): {{ water_total }}</p>
+        <p>Urine Output (ml): {{ urine_total }}</p>
+        <!-- Add Doctor features here -->
+        <div class="dashboard-grid">
+            <a href="{{ url_for('routes.view_stock') }}" class="dashboard-card">📦 View Medicine Stock</a>
+            <!--<a href="{{ url_for('routes.update_stock') }}" class="dashboard-card">📦 Update Medicine Stock</a>-->
+            <a href="{{ url_for('routes.administer_medicine') }}"class="dashboard-card">📦 Administer Medicine</a></p>
+            <a href="{{ url_for('routes.add_vitals') }}" class="dashboard-card">🩺  Add Patient Vitals</a>
+            <a href="{{ url_for('routes.view_vitals') }}" class="dashboard-card">🩺 View Patient Vitals</a>
+            <a href="{{ url_for('routes.add_intake_output') }}" class="dashboard-card">💧 Record Intake & Output</a>
+            <a href="{{ url_for('routes.view_intake_output') }}" class="dashboard-card">📜 View Intake & Output</a>
+            <a href="{{ url_for('routes.add_checklist') }}" class="dashboard-card">📋 Record Daily Checklist</a>
+            <a href="{{ url_for('routes.view_checklist') }}" class="dashboard-card">📂 View Daily Checklist</a>
+            <a href="{{ url_for('routes.add_note') }}" class="dashboard-card">📝 Add Patient Note</a>
+            <a href="{{ url_for('routes.view_notes') }}" class="dashboard-card">📖 View Notes</a>
+            <a href="{{ url_for('routes.edit_patient_names') }}" class="dashboard-card">✏️ Edit Patient Names</a>
+        </div>
+        <!-- <p><a href="{{ url_for('routes.export_checklist_csv') }}">Export Checklist as CSV</a></p> -->
+        <!-- <p><a href="{{ url_for('routes.export_checklist_pdf') }}">Export Checklist as PDF</a></p> -->
+        <p><a href="{{ url_for('logout') }}">Logout</a></p>
+    </div>
+</body>
+
+</html>

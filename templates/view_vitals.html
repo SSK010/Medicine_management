@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitals History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Vitals History</h1>
+
+        <!-- Search Form -->
+        <form method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <select id="patient_name" name="patient_name" required>
+                {% for name in patient_names %}
+                    <option value="{{ name}}">{{ name}}</option>
+                {% endfor %}
+            </select>
+            <input type="text" id="patient_name" name="patient_name" required>
+            <input type="submit" value="Search">
+        </form>
+
+        <table>
+            <tr>
+                <th>Patient Name</th>
+                <th>Date</th>
+                <th>BP (Systolic)</th>
+                <th>BP (Diastolic)</th>
+                <th>Pulse</th>
+                <th>SpO₂</th>
+                <th>Temperature</th>
+                <th>SMBG (Blood Glucose - mg/dL)</th>
+            </tr>
+            {% for vitals in vitals_data %}
+            <tr>
+                <td>{{ vitals[1] }}</td>
+                <td>{{ vitals[2] }}</td>
+                <td>{{ vitals[3] }}</td>
+                <td>{{ vitals[4] }}</td>
+                <td>{{ vitals[5] }}</td>
+                <td>{{ vitals[6] }}</td>
+                <td>{{ vitals[7] }}</td>
+                <td>{{ vitals[8] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a href="{{ url_for('routes.add_vitals') }}" class="btn-save">➕ Add More Vitals</a>
+        <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+        <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        <p><a href="{{ url_for('routes.export_vitals_csv') }}">Download CSV</a></p>
+        <p><a href="{{ url_for('routes.export_vitals_pdf') }}">Download PDF</a></p>
+
+        <canvas id="vitalsChart" width="400" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('vitalsChart').getContext('2d');
+
+        var labels = [{% for vitals in vitals_data %}"{{ vitals[2] }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+
+        var bpSystolicData = [{% for vitals in vitals_data %}{{ vitals[3] if vitals[3] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        var bpDiastolicData = [{% for vitals in vitals_data %}{{ vitals[4] if vitals[4] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        var pulseData = [{% for vitals in vitals_data %}{{ vitals[5] if vitals[5] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        var spo2Data = [{% for vitals in vitals_data %}{{ vitals[6] if vitals[6] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        var tempData = [{% for vitals in vitals_data %}{{ vitals[7] if vitals[7] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        var smbgData = [{% for vitals in vitals_data %}{{ vitals[8] if vitals[8] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+
+        var chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: "BP Systolic",
+                    data: bpSystolicData,
+                    borderColor: "red",
+                    fill: false
+                },
+                {
+                    label: "BP Diastolic",
+                    data: bpDiastolicData,
+                    borderColor: "orange",
+                    fill: false
+                },
+                {
+                    label: "Pulse",
+                    data: pulseData,
+                    borderColor: "blue",
+                    fill: false
+                },
+                {
+                    label: "SpO₂",
+                    data: spo2Data,
+                    borderColor: "green",
+                    fill: false
+                },
+                {
+                    label: "Temperature",
+                    data: tempData,
+                    borderColor: "purple",
+                    fill: false
+                },
+                {
+                    label: "SMBG",
+                    data: smbgData,
+                    borderColor: "brown",
+                    fill: false
+                }
+            ]
+        };
+
+        var vitalsChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "Patient Vitals Trend"
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Date"
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Value"
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

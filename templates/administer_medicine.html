@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administer Medicine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Administer Medicine</h1>
+
+        <!-- Flash Messages for Success/Error -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="medicine_id">Select Medicine:</label>
+            <select id="medicine_id" name="medicine_id" required>
+                {% for medicine in medicines %}
+                <option value="{{ medicine[0] }}">{{ medicine[1] }} - {{ medicine[2] }} (Stock: {{ medicine[3] }})</option>
+                {% endfor %}
+            </select>
+
+            <label for="quantity">Quantity to Administer:</label>
+            <input type="number" id="quantity" name="quantity" required>
+
+            <input type="submit" value="Administer">
+        </form>
+
+        <div class="button-group">
+            <a href="{{ url_for('routes.view_stock') }}" class="btn-nav">Back to Stock</a>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
