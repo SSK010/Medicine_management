@@ -34,6 +34,7 @@ Ensure you have the following installed:
 3. Initialize the database:
    ```sh
    python create_db.py
+   python update_db.py
    ```
 
 4. Run the application:
@@ -56,7 +57,7 @@ Ensure you have the following installed:
 
 ## Configuration
 - Update `config.py` with your database path and Twilio credentials.
-- Modify `app.py` to set up additional routes or customize functionalities.
+- Modify `routes.py` and 'app.py' to set up additional routes or customize functionalities.
 
 ## License
 This project is licensed under the MIT License.
