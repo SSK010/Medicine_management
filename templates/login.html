@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>🔑 Login</h2>
 
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -16,11 +16,16 @@
         {% endwith %}
 
         <form method="POST">
-            <input type="text" name="username" placeholder="Enter Username" required>
-            <input type="password" name="password" placeholder="Enter Password" required>
-            <button type="submit">Login</button>
+            <div class="input-group">
+                <input type="text" name="username" placeholder="👤 Enter Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="🔒 Enter Password" required>
+            </div>
+            <button type="submit" class="btn-login">🚀 Login</button>
         </form>
 
-        <p>Don't have an account? <a href="{{ url_for('register') }}">Register Here</a></p>
+        <p class="register-text">Don't have an account? <a href="{{ url_for('register') }}" class="register-link">Register Here</a></p>
+        <p class="register-text">Change Yout Password  <a href="{{ url_for('routes.change_password') }}"class="register-link">Change Password</a></p>
     </div>
 {% endblock %}

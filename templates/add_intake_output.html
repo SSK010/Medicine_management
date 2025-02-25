@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Record Intake & Output</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Record Intake & Output{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Record Intake & Output</h1>
 
@@ -39,11 +35,8 @@
             <input type="submit" value="Save Intake & Output">
         </form>
 
-        <div class="button-group">
-            <a href="{{ url_for('routes.view_intake_output') }}" class="btn-nav">View All Records</a>
-            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
-            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        <div class="centered-buttons">
+            <a href="{{ url_for('routes.view_intake_output') }}" class="btn-standard" style="background-color: black; color: white;">View Intake Output</a>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

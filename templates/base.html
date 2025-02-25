@@ -18,47 +18,41 @@
             {% endif %}
     
             {% if current_user.is_authenticated %}
-                <li class="{{ 'active' if request.endpoint == 'routes.admin_dashboard' else '' }}">
-                    <a href="{{ url_for('routes.admin_dashboard') }}">Admin Dashboard</a>
+                <li class="{{ 'active' if request.endpoint == 'routes.administer_medicine' else '' }}">
+                    <a href="{{ url_for('routes.administer_medicine') }}">Administer Medicine</a>
                 </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.doctor_dashboard' else '' }}">
-                    <a href="{{ url_for('routes.doctor_dashboard') }}">Doctor Dashboard</a>
-                </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.nurse_dashboard' else '' }}">
-                    <a href="{{ url_for('routes.nurse_dashboard') }}">Nurse Dashboard</a>
-                </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.guest_dashboard' else '' }}">
-                    <a href="{{ url_for('routes.guest_dashboard') }}">Guest Dashboard</a>
-                </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.view_stock' else '' }}">
-                    <a href="{{ url_for('routes.view_stock') }}">View Stock</a>
-                </li>
+                <!--<li class="{{ 'active' if request.endpoint == 'routes.add_vitals' else '' }}">
+                    <a href="{{ url_for('routes.add_vitals') }}">Add Vitals</a>
+                </li>-->
                 <li class="{{ 'active' if request.endpoint == 'routes.view_vitals' else '' }}">
                     <a href="{{ url_for('routes.view_vitals') }}">View Vitals</a>
                 </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.add_intake_output' else '' }}">
+                <!--<li class="{{ 'active' if request.endpoint == 'routes.add_intake_output' else '' }}">
                     <a href="{{ url_for('routes.add_intake_output') }}">Record Intake & Output</a>
-                </li>
+                </li>-->
                 <li class="{{ 'active' if request.endpoint == 'routes.view_intake_output' else '' }}">
                     <a href="{{ url_for('routes.view_intake_output') }}">View Intake & Output</a>
                 </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.add_checklist' else '' }}">
-                    <a href="{{ url_for('routes.add_checklist') }}">Record Daily Checklist</a>
+                <li class="{{ 'active' if request.endpoint == 'routes.view_feeding_data' else '' }}">
+                    <a href="{{ url_for('routes.view_feeding_data') }}">View Daily Feeds</a>
                 </li>
+                <!--<li class="{{ 'active' if request.endpoint == 'routes.add_checklist' else '' }}">
+                    <a href="{{ url_for('routes.add_checklist') }}">Record Daily Checklist</a>
+                </li>-->
                 <li class="{{ 'active' if request.endpoint == 'routes.view_checklist' else '' }}">
                     <a href="{{ url_for('routes.view_checklist') }}">View Daily Checklist</a>
                 </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.add_note' else '' }}">
+                <!--<li class="{{ 'active' if request.endpoint == 'routes.add_note' else '' }}">
                     <a href="{{ url_for('routes.add_note') }}">Add Patient Note</a>
+                </li>-->
+                <li class="{{ 'active' if request.endpoint == 'routes.clinical_summary' else '' }}">
+                    <a href="{{ url_for('routes.clinical_summary') }}">View Clinical Summary</a>
                 </li>
                 <li class="{{ 'active' if request.endpoint == 'routes.view_notes' else '' }}">
                     <a href="{{ url_for('routes.view_notes') }}">View Notes</a>
                 </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.administer_medicine' else '' }}">
-                    <a href="{{ url_for('routes.administer_medicine') }}">Administer Medicine</a>
-                </li>
-                <li class="{{ 'active' if request.endpoint == 'routes.edit_patient_names' else '' }}">
-                    <a href="{{ url_for('routes.edit_patient_names') }}">Edit Patient Names</a>
+                <li class="{{ 'active' if request.endpoint == 'routes.view_stock' else '' }}">
+                    <a href="{{ url_for('routes.view_stock') }}">View Stock</a>
                 </li>
                 <li>
                     <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
@@ -67,8 +61,7 @@
         </ul>
     </nav>
     
-
-    <!-- Main Content Block (Different for Each Page) -->
+    <!-- Main Content Block -->
     <div class="content">
         {% block content %}
         {% endblock %}

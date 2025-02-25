@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Advice & Administer Medicine{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>🩺 Medication Advice & Administration</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Administer Medication Form -->
+    <h3>Administer Medication</h3>
+    <form method="POST">
+        <label for="patient_name">Patient Name:</label>
+        <select id="patient_name" name="patient_name" required>
+            <option value="" disabled selected>Select Patient</option>
+            {% for name in patient_names %}
+                <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="medicine_name">Medicine:</label>
+        <select id="medicine_name" name="medicine_name" required>
+            <option value="" disabled selected>Select Medicine</option>
+            {% for medicine in medicines %}
+                <option value="{{ medicine }}">{{ medicine }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="brand_name">Brand:</label>
+        <select id="brand_name" name="brand_name" required></select>
+
+        <label for="dose">Dose:</label>
+        <select id="dose" name="dose" required></select>
+
+        <label for="quantity">Quantity:</label>
+        <select id="quantity" name="quantity" required></select>
+
+        <label for="from_date">From Date:</label>
+        <input type="date" id="from_date" name="from_date" required>
+
+        <label for="to_date">To Date (Optional):</label>
+        <input type="date" id="to_date" name="to_date">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h3>Today's Medication Advice</h3>
+    <table>
+        <tr>
+            <th>Patient Name</th>
+            <th>Medicine</th>
+            <th>Brand</th>
+            <th>Dose</th>
+            <th>Quantity</th>
+            <th>From Date</th>
+            <th>To Date</th>
+        </tr>
+        {% for advice in medication_advice %}
+            <tr>
+                <td>{{ advice.patient_name }}</td>
+                <td>{{ advice.medicine_name }}</td>
+                <td>{{ advice.brand }}</td>
+                <td>{{ advice.dose }}</td>
+                <td>{{ advice.quantity }}</td>
+                <td>{{ advice.from_date }}</td>
+                <td>{{ advice.to_date or "N/A" }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+    document.getElementById("medicine_name").addEventListener("change", function() {
+        let medicine = this.value;
+        fetch(`/get_brands_doses/${medicine}`)
+            .then(response => response.json())
+            .then(data => {
+                let brandDropdown = document.getElementById("brand_name");
+                let doseDropdown = document.getElementById("dose");
+
+                brandDropdown.innerHTML = "";
+                doseDropdown.innerHTML = "";
+
+                let uniqueBrands = new Set();
+                let brandToDoses = {};
+
+                data.forEach(item => {
+                    uniqueBrands.add(item.brand);
+
+                    if (!brandToDoses[item.brand]) {
+                        brandToDoses[item.brand] = new Set();
+                    }
+                    brandToDoses[item.brand].add(item.dose);
+                });
+
+                uniqueBrands.forEach(brand => {
+                    let option = document.createElement("option");
+                    option.value = brand;
+                    option.textContent = brand;
+                    brandDropdown.appendChild(option);
+                });
+
+                // Set doses for the first brand automatically
+                updateDoseDropdown(brandToDoses, brandDropdown.value);
+                
+                // When brand changes, update doses
+                brandDropdown.addEventListener("change", function() {
+                    updateDoseDropdown(brandToDoses, this.value);
+                });
+            });
+    });
+
+    function updateDoseDropdown(brandToDoses, selectedBrand) {
+        let doseDropdown = document.getElementById("dose");
+        doseDropdown.innerHTML = "";
+
+        if (brandToDoses[selectedBrand]) {
+            brandToDoses[selectedBrand].forEach(dose => {
+                let option = document.createElement("option");
+                option.value = dose;
+                option.textContent = dose;
+                doseDropdown.appendChild(option);
+            });
+        }
+    }
+
+    document.getElementById("dose").addEventListener("change", function() {
+        let medicine = document.getElementById("medicine_name").value;
+        let brand = document.getElementById("brand_name").value;
+        let dose = this.value;
+
+        let stockDict = JSON.parse('{{ max_stock_dict | tojson | safe }}');
+        let key = `${medicine}|${brand}|${dose}`;
+        let maxQuantity = stockDict[key] || 1;
+
+        let quantityDropdown = document.getElementById("quantity");
+        quantityDropdown.innerHTML = "";
+        for (let i = 1; i <= maxQuantity; i++) {
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            quantityDropdown.appendChild(option);
+        }
+    });
+</script>
+{% endblock %}

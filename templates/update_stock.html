@@ -1,29 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Medicine Stock</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <h1>Update Medicine Stock</h1>
-    
-    <form method="POST">
-        <label for="brand">Brand Name:</label>
-        <input type="text" id="brand" name="brand" value="{{ medicines[1] }}" disabled>
+{% extends 'base.html' %}
 
-        <label for="dose">Dose (e.g., 500mg, 1g):</label>
-        <input type="text" id="dose" name="dose" value="{{ medicines[2] }}" disabled>
+{% block title %}Update Medicine Stock{% endblock %}
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" value="{{ medicines[3] }}" required>
+{% block content %}
+    <div class="container">
+        <h1>Update Medicine Stock</h1>
 
-        <input type="submit" value="Update Stock">
-    </form>
+        <form method="POST" action="{{ url_for('routes.update_stock') }}">
+            <!-- Medicine Selection -->
+            <label for="medicine">Select Medicine:</label>
+            <select id="medicine_id" name="medicine_id" required onchange="fetchBrandDose()">
+                <option value="">-- Select Medicine --</option>
+                {% for med in medicines %}
+                <option value="{{ med['id'] }}">{{ med['medicine_name'] }}</option>
+                {% endfor %}
+            </select>
 
-    <a href="{{ url_for('routes.view_stock') }}" class="btn-nav">View Stock</a>
-    <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
-    <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
-</body>
-</html>
+            <!-- Brand Selection (Dynamic) -->
+            <label for="brand">Select Brand:</label>
+            <select id="brand" name="brand" required onchange="fetchDose()">
+                <option value="">-- Select Brand --</option>
+            </select>
+
+            <!-- Dose Selection (Dynamic) -->
+            <label for="dose">Select Dose:</label>
+            <select id="dose" name="dose" required>
+                <option value="">-- Select Dose --</option>
+            </select>
+
+            <!-- New Quantity Input -->
+            <label for="new_quantity">New Quantity:</label>
+            <input type="number" name="new_quantity" required>
+
+            <input type="submit" value="Update Stock">
+        </form>
+
+        <div class="centered-buttons">
+            <a href="{{ url_for('routes.view_stock') }}" class="btn-standard" style="background-color: black; color: white;">View Medicine Stock</a>
+        </div>
+    </div>
+
+    <script>
+        function fetchBrandDose() {
+            let medicineId = document.getElementById("medicine_id").value;
+            if (medicineId) {
+                fetch(`/get_brands?medicine_id=${medicineId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let brandSelect = document.getElementById("brand");
+                    brandSelect.innerHTML = '<option value="">-- Select Brand --</option>';
+                    data.brands.forEach(brand => {
+                        let option = document.createElement("option");
+                        option.value = brand;
+                        option.textContent = brand;
+                        brandSelect.appendChild(option);
+                    });
+                });
+            }
+        }
+
+        function fetchDose() {
+            let medicineId = document.getElementById("medicine_id").value;
+            let brand = document.getElementById("brand").value;
+            if (medicineId && brand) {
+                fetch(`/get_doses?medicine_id=${medicineId}&brand=${brand}`)
+                .then(response => response.json())
+                .then(data => {
+                    let doseSelect = document.getElementById("dose");
+                    doseSelect.innerHTML = '<option value="">-- Select Dose --</option>';
+                    data.doses.forEach(dose => {
+                        let option = document.createElement("option");
+                        option.value = dose;
+                        option.textContent = dose;
+                        doseSelect.appendChild(option);
+                    });
+                });
+            }
+        }
+    </script>
+{% endblock %}

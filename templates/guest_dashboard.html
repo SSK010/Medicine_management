@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <h1>Guest Dashboard (View-Only)</h1>
-    <p>Welcome, {{ current_user.username }} (Guest)</p>
-    <h3>Daily Intake & Output</h3>
-    <p>Water Intake (ml): {{ water_total }}</p>
-    <p>Urine Output (ml): {{ urine_total }}</p>
+{% extends 'base.html' %}
 
-    <p><a href="{{ url_for('routes.view_stock') }}">View Medicine Stock</a></p>
-    <p><a href="{{ url_for('routes.view_vitals') }}">View Patient Vitals</a></p>
-    <p><a href="{{ url_for('routes.view_intake_output') }}">View Intake & Output Records</a></p>
-    <p><a href="{{ url_for('routes.view_checklist') }}">View Daily Checklist Records</a></p>
-    <p><a href="{{ url_for('routes.view_notes') }}">View Notes & Updates</a></p>
-    <p><a href="{{ url_for('logout') }}">Logout</a></p>
-</body>
-</html>
+{% block title %}Guest Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Guest Dashboard (View-Only)</h1>
+        <p>Welcome, {{ current_user.username }} (Guest)</p>
+        
+        <h3>Daily Intake & Output</h3>
+        <p>Water Intake (ml): {{ water_total }}</p>
+        <p>Urine Output (ml): {{ urine_total }}</p>
+
+        <div class="dashboard-grid">
+            <a href="{{ url_for('routes.view_stock') }}" class="dashboard-card">📦 View Medicine Stock</a>
+            <a href="{{ url_for('routes.view_vitals') }}" class="dashboard-card">🩺 View Patient Vitals</a>
+            <a href="{{ url_for('routes.view_intake_output') }}" class="dashboard-card">📜 View Intake & Output Records</a>
+            <a href="{{ url_for('routes.view_checklist') }}" class="dashboard-card">📂 View Daily Checklist Records</a>
+            <a href="{{ url_for('routes.view_notes') }}" class="dashboard-card">📖 View Notes & Updates</a>
+            <a href="{{ url_for('routes.clinical_summary') }}" class="dashboard-card">View Clinical Summary</a>
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="logout-button">🚪 Logout</a>
+    </div>
+{% endblock %}

@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Patient Names</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Edit Patient Names{% endblock %}
+
+{% block content %}
+<div class="container">
     <h1>Edit Patient Names</h1>
 
     <form method="POST">
@@ -17,10 +15,10 @@
     <h2>Existing Patient Names:</h2>
     <ul>
         {% for name in patient_names %}
-            <li>{{ name[1] }}</li> <!-- Display existing patient names -->
+            <li>{{ name }}</li> <!-- Display existing patient names -->
+        {% else %}
+            <li>No patient names added yet.</li>
         {% endfor %}
     </ul>
-
-    <p><a href="{{ url_for('routes.dashboard') }}">Back to Dashboard</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

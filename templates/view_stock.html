@@ -3,27 +3,26 @@
 {% block title %}View Medicine Stock{% endblock %}
 
 {% block content %}
-    <div class="section">
+    <div class="container">
         <h2>Medicine Stock</h2>
         <table>
             <tr>
+                <th>Medicine</th>
                 <th>Brand</th>
                 <th>Dose</th>
                 <th>Quantity</th>
             </tr>
             {% for medicine in medicines %}
             <tr>
-                <td>{{ medicine.brand }}</td>
-                <td>{{ medicine.dose }}</td>
-                <td>{{ medicine.quantity }}</td>
+                <td>{{ medicine['medicine_name'] }}</td>
+                <td>{{ medicine['brand'] }}</td>
+                <td>{{ medicine['dose'] }}</td>
+                <td>{{ medicine['quantity'] }}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
-    <a href="{{ url_for('routes.update_stock') }}" class="btn-nav">Update Stock</a>
-    <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
-    <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
-    <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+    <div class="centered-buttons">
+        <a href="{{ url_for('routes.update_stock') }}" class="btn-standard" style="background-color: black; color: white;">Update Stock</a>
+    </div>
 {% endblock %}
-
-           

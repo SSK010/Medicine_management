@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Patient Note</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Add Patient Note{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Add Patient Note</h1>
 
@@ -23,7 +19,7 @@
             <label for="patient_name">Patient Name:</label>
             <select id="patient_name" name="patient_name" required>
                 {% for name in patient_names %}
-                    <option value="{{ name[1] }}">{{ name[1] }}</option>
+                    <option value="{{ name }}">{{ name }}</option>
                 {% endfor %}
             </select>
 
@@ -33,11 +29,8 @@
             <input type="submit" value="Save Note">
         </form>
 
-        <div class="button-group">
-            <a href="{{ url_for('routes.view_notes') }}" class="btn-nav">View All Notes</a>
-            <a href="{{ url_for('routes.dashboard') }}" class="btn-nav">Dashboard</a>
-            <a href="{{ url_for('logout') }}" class="btn-nav">Logout</a>
+        <div class="centered-buttons">
+            <a href="{{ url_for('routes.view_notes') }}" class="btn-standard" style="background-color: black; color: white;">View Notes</a>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

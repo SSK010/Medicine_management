@@ -106,13 +106,46 @@ nav ul li a.active {
     background-color: #ff5a5a;
 }
 
-/* Login Container Styles */
+/* Centered Buttons Styling */
+.centered-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.centered-buttons a {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+}
+
+.centered-buttons .btn-green {
+    background-color: #4CAF50; /* Green */
+}
+
+.centered-buttons .btn-blue {
+    background-color: #2196F3; /* Blue */
+}
+
+.centered-buttons .btn-red {
+    background-color: #f44336; /* Red */
+}
+
+.centered-buttons a:hover {
+    opacity: 0.8;
+}
+
+/* Login Page Enhancements */
 .login-container {
     width: 100%;
     max-width: 400px;
     margin: 10vh auto;
     padding: 35px;
-    background-color: #fff;
+    background-color: #40E0D0;
     border-radius: 15px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -122,30 +155,33 @@ nav ul li a.active {
 
 .login-container h2 {
     font-family: 'Italianno', cursive;
-    color: var(--primary-color);
+    color: #000000;
     font-size: 32px;
     margin-bottom: 20px;
 }
 
-.login-container input {
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
+    padding: 12px;
     border: 2px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
     transition: all 0.3s ease;
 }
 
-.login-container input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
+.input-group input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px #4CAF50;
 }
 
-.login-container button {
+.btn-login {
     width: 100%;
     padding: 12px;
-    background-color: #f76c6c;
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 8px;
@@ -154,45 +190,27 @@ nav ul li a.active {
     transition: background-color 0.3s ease, transform 0.3s;
 }
 
-.login-container button:hover {
-    background-color: #ff5a5a;
-    transform: translateY(-5px);
+.btn-login:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
 }
 
-.login-container a {
+.register-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.register-link {
     text-decoration: none;
     color: #f76c6c;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.login-container a:hover {
+.register-link:hover {
     color: #ff5a5a;
 }
-
-.login-container p {
-    margin-top: 20px;
-}
-
-/* Flash Message Styles */
-.flash {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 8px;
-    font-size: 16px;
-    text-align: center;
-}
-
-.flash.success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.flash.error {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
@@ -213,4 +231,4 @@ nav ul li a.active {
         width: auto;
         margin-top: 30px;
     }
-}
+} 

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Feeding System{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>🍼 Feeding System</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="form-container">
+            <label for="patient_name">Patient Name:</label>
+            <select id="patient_name" name="patient_name" required>
+                {% for name in patient_names %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="feed_type">Feed Type:</label>
+            <select id="feed_type" name="feed_type" required>
+                <option value="Milk">Milk</option>
+                <option value="Formula">Formula</option>
+                <option value="Water">Water</option>
+            </select>
+
+            <label for="feed_quantity">Feed Quantity (ml):</label>
+            <select id="feed_quantity" name="feed_quantity" required>
+                {% for quantity in range(25, 301, 25) %}
+                    <option value="{{ quantity }}">{{ quantity }} ml</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Save Feeding Data">
+        </form>
+
+        <div class="centered-buttons">
+            <a href="{{ url_for('routes.view_feeding_data') }}" class="btn-standard" style="background-color: black; color: white;">View Feeding Data</a>
+        </div>
+    </div>
+{% endblock %}

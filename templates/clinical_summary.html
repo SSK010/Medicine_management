@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Clinical Summary{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>📄 Clinical Summary</h1>
+        <div class="doc-content">
+            <p>{{ content | replace('\n', '<br>') | safe }}</p>  <!-- Preserve line breaks -->
+        </div>
+        <div class="centered-buttons">
+            <a href="{{ url_for('routes.download_clinical_summary') }}" class="btn-download" style="background-color: black; color: white;">📥 Download as DOCX</a>
+            <a href="{{ url_for('routes.download_clinical_summary_pdf') }}" class="btn-download" style="background-color: black; color: white;">📥 Download as PDF</a>
+        </div>
+    </div>
+{% endblock %}
