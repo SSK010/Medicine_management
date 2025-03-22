@@ -17,7 +17,7 @@
             <input type="submit" value="Search">
         </form>
 
-        <table>
+        <table border="1">
             <tr>
                 <th>Patient Name</th>
                 <th>Date</th>
@@ -49,38 +49,60 @@
             <a href="{{ url_for('routes.export_vitals_csv') }}" class="btn-standard" style="background-color: black; color: white;">Download CSV</a>
             <a href="{{ url_for('routes.export_vitals_pdf') }}" class="btn-standard" style="background-color: black; color: white;">Download PDF</a>
         </div>
-
-        <canvas id="vitalsChart" width="400" height="200"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var ctx = document.getElementById('vitalsChart').getContext('2d');
-        var labels = [{% for vitals in vitals_data %}"{{ vitals[2] }}"{% if not loop.last %}, {% endif %}{% endfor %}];
-        var bpSystolicData = [{% for vitals in vitals_data %}{{ vitals[3] if vitals[3] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var bpDiastolicData = [{% for vitals in vitals_data %}{{ vitals[4] if vitals[4] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var pulseData = [{% for vitals in vitals_data %}{{ vitals[5] if vitals[5] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var spo2Data = [{% for vitals in vitals_data %}{{ vitals[6] if vitals[6] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var o2Data = [{% for vitals in vitals_data %}{{ vitals[9] if vitals[9] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var tempData = [{% for vitals in vitals_data %}{{ vitals[7] if vitals[7] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
-        var smbgData = [{% for vitals in vitals_data %}{{ vitals[8] if vitals[8] else 'null' }}{% if not loop.last %}, {% endif %}{% endfor %}];
+<!-- Ensure this canvas is present in your HTML where you want the chart -->
+<!-- Ensure this canvas element exists in your HTML -->
+<canvas id="vitalsChart"></canvas>
 
-        var chartData = {
-            labels: labels,
-            datasets: [
-                { label: "BP Systolic", data: bpSystolicData, borderColor: "red", fill: false },
-                { label: "BP Diastolic", data: bpDiastolicData, borderColor: "orange", fill: false },
-                { label: "Pulse", data: pulseData, borderColor: "blue", fill: false },
-                { label: "SpO₂", data: spo2Data, borderColor: "green", fill: false },
-                { label: "O₂", data: o2Data, borderColor: "purple", fill: false },
-                { label: "Temperature", data: tempData, borderColor: "purple", fill: false },
-                { label: "SMBG", data: smbgData, borderColor: "brown", fill: false }
-            ]
-        };
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        var vitalsChart = new Chart(ctx, {
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('vitalsChart');
+
+        if (!ctx) {
+            console.error("Canvas element not found!");
+            return;
+        }
+
+        var labels = [];
+        var bpSystolicData = [];
+        var bpDiastolicData = [];
+        var pulseData = [];
+        var spo2Data = [];
+        var o2Data = [];
+        var tempData = [];
+        var smbgData = [];
+
+        {% for vitals in vitals_data %}
+            labels.push("{{ vitals[2] }}");
+
+            // Use Jinja2 `default` filter to ensure `None` converts to `null`
+            bpSystolicData.push({{ vitals[3] | default('null', true) }});
+            bpDiastolicData.push({{ vitals[4] | default('null', true) }});
+            pulseData.push({{ vitals[5] | default('null', true) }});
+            spo2Data.push({{ vitals[6] | default('null', true) }});
+            o2Data.push({{ vitals[7] | default('null', true) }});
+            tempData.push({{ vitals[8] | default('null', true) }});
+            smbgData.push({{ vitals[9] | default('null', true) }});
+        {% endfor %}
+
+        new Chart(ctx, {
             type: 'line',
-            data: chartData,
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: "BP Systolic", data: bpSystolicData, borderColor: "red", fill: false },
+                    { label: "BP Diastolic", data: bpDiastolicData, borderColor: "orange", fill: false },
+                    { label: "Pulse", data: pulseData, borderColor: "blue", fill: false },
+                    { label: "SpO₂", data: spo2Data, borderColor: "green", fill: false },
+                    { label: "O₂", data: o2Data, borderColor: "purple", fill: false },
+                    { label: "Temperature", data: tempData, borderColor: "brown", fill: false },
+                    { label: "SMBG", data: smbgData, borderColor: "black", fill: false }
+                ]
+            },
             options: {
                 responsive: true,
                 title: { display: true, text: "Patient Vitals Trend" },
@@ -90,5 +112,9 @@
                 }
             }
         });
-    </script>
+    });
+
+    // Debugging: Check if Chart.js is loaded
+    console.log("Chart.js Type:", typeof Chart);
+</script>
 {% endblock %}

@@ -41,7 +41,7 @@ print("✅ Users table created successfully!")
 # Insert default users if not already present
 default_users = [
     ('admin', 'admin123', 'Admin'),
-    ('docotr', 'doctor123', 'Doctor'),
+    ('doctor', 'doctor123', 'Doctor'),
     ('nurse', 'nurse123', 'Nurse'),
     ('guest', 'guest123', 'Guest')
 ]

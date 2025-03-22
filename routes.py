@@ -369,15 +369,14 @@ def administer_medicine():
 
     # Fetch today's medication advice with correct remaining quantity calculation
     cursor.execute("""
-    SELECT medication_advice.id, patient_name, medicine_name, brand, dose, 
-        medication_advice.quantity AS advised_quantity, 
-        (medication_advice.quantity - COALESCE((SELECT SUM(a.quantity) 
-                                                 FROM administered_medicines a 
-                                                 WHERE a.medicine_id = medication_advice.id), 0)
-        ) AS remaining_quantity
-    FROM medication_advice 
-    WHERE from_date <= ? AND (to_date = '' OR to_date >= ?)
-""", (datetime.today().strftime('%Y-%m-%d'), datetime.today().strftime('%Y-%m-%d')))
+        SELECT ma.id, ma.patient_name, ma.medicine_name, ma.brand, ma.dose, 
+               ma.quantity AS advised_quantity, 
+               (ma.quantity - COALESCE(SUM(am.quantity), 0)) AS remaining_quantity
+        FROM medication_advice ma
+        LEFT JOIN administered_medicines am ON ma.id = am.medicine_id
+        WHERE ma.from_date <= ? AND (ma.to_date = '' OR ma.to_date >= ?)
+        GROUP BY ma.id
+    """, (datetime.today().strftime('%Y-%m-%d'), datetime.today().strftime('%Y-%m-%d')))
 
     medication_advice = cursor.fetchall()
     conn.close()
@@ -397,13 +396,11 @@ def administer_medicine():
             flash("Medicine not found!", "error")
             return redirect(url_for('routes.administer_medicine'))
 
-        medicine = list(medicine)
         medicine_stock = int(medicine[4])  # Ensure stock is an integer
 
         # Fetch the correct `medication_advice.id`
         cursor.execute("""
-            SELECT medication_advice.id 
-            FROM medication_advice 
+            SELECT id, quantity FROM medication_advice 
             WHERE medicine_name = ?
             ORDER BY from_date DESC LIMIT 1
         """, (medicine[1],))
@@ -413,19 +410,19 @@ def administer_medicine():
             flash("No medication advice found for this medicine!", "error")
             return redirect(url_for('routes.administer_medicine'))
 
-        advice_id = advice_data[0]  # Get the correct medication_advice.id
+        advice_id, advised_quantity = advice_data  # Extract advice_id and total advised quantity
 
         # Fetch the remaining advised quantity correctly
         cursor.execute("""
-            SELECT (medication_advice.quantity - COALESCE(SUM(a.quantity), 0)) AS remaining_quantity
-            FROM medication_advice
-            LEFT JOIN administered_medicines a ON medication_advice.id = a.medicine_id
-            WHERE medication_advice.id = ?
-            GROUP BY medication_advice.id
+            SELECT (ma.quantity - COALESCE(SUM(am.quantity), 0)) AS remaining_quantity
+            FROM medication_advice ma
+            LEFT JOIN administered_medicines am ON ma.id = am.medicine_id
+            WHERE ma.id = ?
+            GROUP BY ma.id
         """, (advice_id,))
 
         advised_data = cursor.fetchone()
-        remaining_quantity = int(advised_data[0]) if advised_data and advised_data[0] is not None else 0
+        remaining_quantity = int(advised_data[0]) if advised_data and advised_data[0] is not None else advised_quantity
 
         # Check if enough stock and advised quantity are available
         if medicine_stock < quantity:
@@ -451,6 +448,7 @@ def administer_medicine():
         return redirect(url_for('routes.administer_medicine'))
 
     return render_template('administer_medicine.html', medicines=medicines, medication_advice=medication_advice)
+
 
 @routes.route('/advice_medicine', methods=['GET', 'POST'])
 def advice_medicine():
@@ -511,15 +509,16 @@ def get_brands_doses(medicine_name):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    cursor.execute("SELECT brand, dose FROM medicines WHERE medicine_name = ?", (medicine_name,))
+    cursor.execute("SELECT brand, dose, SUM(quantity) as stock FROM medicines WHERE medicine_name = ? GROUP BY brand, dose", (medicine_name,))
     result = cursor.fetchall()
-    
+
     conn.close()
 
-    # Convert SQLite rows to dictionaries
-    brands_doses = [{"brand": row["brand"], "dose": row["dose"]} for row in result]
+    # Convert SQLite rows to JSON format
+    brands_doses = [{"brand": row["brand"], "dose": row["dose"], "stock": row["stock"]} for row in result]
 
     return jsonify(brands_doses)
+
 
 
 @routes.route('/withhold_medicine', methods=['POST'])

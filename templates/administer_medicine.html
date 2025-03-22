@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <h1>Administer Medicine</h1>
-
+        
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -14,49 +14,52 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
+        
         <!-- Medicine Advice Table -->
         <h2>Today's Medicine Advice</h2>
-        <table>
-            <thead>
-                <tr><th>Patient Name</th>
-                    <th>Medicine Name</th>
-                    <th>Brand</th>
-                    <th>Dose</th>
-                    <th>Advised Quantity</th>
-                    <th>Remaining Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for advice in medication_advice %}
-                <tr>
-                    <td>{{ advice[1] }}</td>
-                    <td>{{ advice[2] }}</td>
-                    <td>{{ advice[3] }}</td>
-                    <td>{{ advice[4] }}</td>
-                    <td id="remaining_{{ advice[0] }}">{{ advice[5] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Medicine Name</th>
+                        <th>Brand</th>
+                        <th>Dose</th>
+                        <th>Advised Quantity</th>
+                        <th>Remaining Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for advice in medication_advice %}
+                    <tr>
+                        <td>{{ advice[1] }}</td>
+                        <td>{{ advice[2] }}</td>
+                        <td>{{ advice[3] }}</td>
+                        <td>{{ advice[4] }}</td>
+                        <td>{{ advice[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <!-- Administer Medicine Form -->
-        <form method="POST">
+        <form method="POST" class="styled-form">
             <label for="medicine_id">Select Medicine:</label>
             <select id="medicine_id" name="medicine_id" required>
                 {% for medicine in medicines %}
                 <option value="{{ medicine[0] }}">{{ medicine[1] }} - {{ medicine[2] }} {{ medicine[3] }} (Stock: {{ medicine[4] }})</option>
                 {% endfor %}
             </select>
-
+            
             <label for="quantity">Quantity to Administer:</label>
             <input type="number" id="quantity" name="quantity" required min="1" max="{{ max_stock }}">
-
-            <input type="submit" value="Administer">
+            
+            <input type="submit" value="Administer" class="btn-standard">
         </form>
-
+        
         <div class="centered-buttons">
-            <a href="{{ url_for('routes.view_stock') }}" class="btn-standard" style="background-color: black; color: white;">Back to Stock</a>
+            <a href="{{ url_for('routes.view_stock') }}" class="btn-standard">Back to Stock</a>
         </div>
     </div>
 {% endblock %}

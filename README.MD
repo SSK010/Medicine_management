@@ -60,7 +60,7 @@ Ensure you have the following installed:
 - Modify `routes.py` and 'app.py' to set up additional routes or customize functionalities.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GPL-3.0 License.
 
 ## Contact
-For any issues, please create an issue in the repository or reach out to `your-email@example.com`.
+For any issues, please create an issue in the repository or reach out to `kulkarni.shrivatsa05@gmail.com`.

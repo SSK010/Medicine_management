@@ -79,76 +79,87 @@
 
 <script>
     document.getElementById("medicine_name").addEventListener("change", function() {
-        let medicine = this.value;
-        fetch(`/get_brands_doses/${medicine}`)
-            .then(response => response.json())
-            .then(data => {
-                let brandDropdown = document.getElementById("brand_name");
-                let doseDropdown = document.getElementById("dose");
+    let medicine = this.value;
+    fetch(`/get_brands_doses/${medicine}`)
+        .then(response => response.json())
+        .then(data => {
+            let brandDropdown = document.getElementById("brand_name");
+            let doseDropdown = document.getElementById("dose");
 
-                brandDropdown.innerHTML = "";
-                doseDropdown.innerHTML = "";
+            brandDropdown.innerHTML = "";
+            doseDropdown.innerHTML = "";
 
-                let uniqueBrands = new Set();
-                let brandToDoses = {};
+            let uniqueBrands = new Set();
+            let brandToDoses = {};
 
-                data.forEach(item => {
-                    uniqueBrands.add(item.brand);
+            data.forEach(item => {
+                uniqueBrands.add(item.brand);
 
-                    if (!brandToDoses[item.brand]) {
-                        brandToDoses[item.brand] = new Set();
-                    }
-                    brandToDoses[item.brand].add(item.dose);
-                });
-
-                uniqueBrands.forEach(brand => {
-                    let option = document.createElement("option");
-                    option.value = brand;
-                    option.textContent = brand;
-                    brandDropdown.appendChild(option);
-                });
-
-                // Set doses for the first brand automatically
-                updateDoseDropdown(brandToDoses, brandDropdown.value);
-                
-                // When brand changes, update doses
-                brandDropdown.addEventListener("change", function() {
-                    updateDoseDropdown(brandToDoses, this.value);
-                });
+                if (!brandToDoses[item.brand]) {
+                    brandToDoses[item.brand] = new Set();
+                }
+                brandToDoses[item.brand].add(item.dose);
             });
-    });
 
-    function updateDoseDropdown(brandToDoses, selectedBrand) {
-        let doseDropdown = document.getElementById("dose");
-        doseDropdown.innerHTML = "";
-
-        if (brandToDoses[selectedBrand]) {
-            brandToDoses[selectedBrand].forEach(dose => {
+            uniqueBrands.forEach(brand => {
                 let option = document.createElement("option");
-                option.value = dose;
-                option.textContent = dose;
-                doseDropdown.appendChild(option);
+                option.value = brand;
+                option.textContent = brand;
+                brandDropdown.appendChild(option);
             });
-        }
+
+            // Set doses for the first brand automatically
+            if (brandDropdown.options.length > 0) {
+                brandDropdown.value = brandDropdown.options[0].value;
+                updateDoseDropdown(brandToDoses, brandDropdown.value);
+            }
+
+            // When brand changes, update doses
+            brandDropdown.addEventListener("change", function() {
+                updateDoseDropdown(brandToDoses, this.value);
+            });
+        });
+});
+
+function updateDoseDropdown(brandToDoses, selectedBrand) {
+    let doseDropdown = document.getElementById("dose");
+    doseDropdown.innerHTML = "";
+
+    if (brandToDoses[selectedBrand]) {
+        brandToDoses[selectedBrand].forEach(dose => {
+            let option = document.createElement("option");
+            option.value = dose;
+            option.textContent = dose;
+            doseDropdown.appendChild(option);
+        });
     }
 
-    document.getElementById("dose").addEventListener("change", function() {
-        let medicine = document.getElementById("medicine_name").value;
-        let brand = document.getElementById("brand_name").value;
-        let dose = this.value;
+    if (doseDropdown.options.length > 0) {
+        doseDropdown.value = doseDropdown.options[0].value;
+        updateQuantityDropdown();
+    }
 
-        let stockDict = JSON.parse('{{ max_stock_dict | tojson | safe }}');
-        let key = `${medicine}|${brand}|${dose}`;
-        let maxQuantity = stockDict[key] || 1;
+    doseDropdown.addEventListener("change", updateQuantityDropdown);
+}
 
-        let quantityDropdown = document.getElementById("quantity");
-        quantityDropdown.innerHTML = "";
-        for (let i = 1; i <= maxQuantity; i++) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            quantityDropdown.appendChild(option);
-        }
-    });
+function updateQuantityDropdown() {
+    let medicine = document.getElementById("medicine_name").value;
+    let brand = document.getElementById("brand_name").value;
+    let dose = document.getElementById("dose").value;
+    
+    let stockDict = JSON.parse('{{ max_stock_dict | tojson | safe }}');
+    let key = `${medicine}|${brand}|${dose}`;
+    let maxQuantity = stockDict[key] || 1;
+
+    let quantityDropdown = document.getElementById("quantity");
+    quantityDropdown.innerHTML = "";
+    
+    for (let i = 1; i <= maxQuantity; i++) {
+        let option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        quantityDropdown.appendChild(option);
+    }
+}
 </script>
 {% endblock %}
