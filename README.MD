@@ -22,7 +22,7 @@ Ensure you have the following installed:
 ### Setup
 1. Clone this repository:
    ```sh
-   git clone https://github.com/your-repo/medicine-management.git
+   git clone https://github.com/ShrivatsaSK/Medicine_management.git
    cd medicine-management
    ```
 
@@ -63,4 +63,4 @@ Ensure you have the following installed:
 This project is licensed under the GPL-3.0 License.
 
 ## Contact
-For any issues, please create an issue in the repository or reach out to `kulkarni.shrivatsa05@gmail.com`.
+For any issues, please create an issue in the repository or reach out to `kulkarnishrivatsa05@gmail.com`.
